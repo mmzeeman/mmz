@@ -239,20 +239,14 @@ void matrix_scan_user(void) {
     leading = false;
     leader_end();
 
-    SEQ_TWO_KEYS(KC_G, KC_S) {
-      SEND_STRING("git status");
-    }
-    SEQ_TWO_KEYS(KC_G, KC_D) {
-      SEND_STRING("git diff");
-    }
+    /* Git */
+    SEQ_TWO_KEYS(KC_G, KC_S) { SEND_STRING("git status"); }
+    SEQ_TWO_KEYS(KC_G, KC_D) { SEND_STRING("git diff"); }
 
-    SEQ_TWO_KEYS(KC_Z, KC_M) {
-      SEND_STRING("z:m().");
-    }
-    SEQ_TWO_KEYS(KC_R, KC_T) {
-      SEND_STRING("length(recon:tcp()).");
-    }
-
+    /* Zotonic and erlang */
+    SEQ_TWO_KEYS(KC_Z, KC_M) { SEND_STRING("z:m()."); }
+    SEQ_TWO_KEYS(KC_Z, KC_C) { SEND_STRING("Context"); }
+    SEQ_TWO_KEYS(KC_R, KC_T) { SEND_STRING("length(recon:tcp())."); }
   }
 };
 
