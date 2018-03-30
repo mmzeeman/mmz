@@ -1,0 +1,9 @@
+#ifndef CONFIG_USER_H
+#define CONFIG_USER_H
+
+#include QMK_KEYBOARD_CONFIG_H
+
+#undef LEADER_TIMEOUT
+#define LEADER_TIMEOUT 1000 
+
+#endif
