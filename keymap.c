@@ -20,11 +20,17 @@ enum custom_keycodes {
 };
 
 
+enum {
+  TD_LPRN,
+  TD_RPRN
+};
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = KEYMAP(KC_EQUAL,       KC_1,     KC_2,    KC_3,   KC_4, KC_5, ALL_T(KC_NO),
                   KC_TAB,         KC_Q,     KC_W,    KC_E,   KC_R, KC_T, TG(1),
                   KC_LCTL,        KC_A,     KC_S,    KC_D,   KC_F, KC_G,
-                  KC_LSHIFT,      KC_Z,     KC_X,    KC_C,   KC_V, KC_B, KC_LBRACKET,
+                  KC_LSHIFT,      KC_Z,     KC_X,    KC_C,   KC_V, KC_B, TD(TD_LPRN),
                   LT(1,KC_GRAVE), KC_QUOTE, KC_LCTL, KC_LALT,KC_LGUI,
                                                                     KC_TRNS, KC_TRNS,
                                                                              KC_TRNS,
@@ -33,7 +39,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                   MEH_T(KC_NO), KC_6,    KC_7,     KC_8,        KC_9,        KC_0,            KC_MINUS,
                   TG(1),        KC_Y,    KC_U,     KC_I,        KC_O,        KC_P,            KC_BSLASH,
                                 KC_H,    KC_J,     KC_K,        KC_L,        LT(2,KC_SCOLON), KC_QUOTE,
-                  KC_RBRACKET,  KC_N,    KC_M,     KC_COMMA,    KC_DOT,      KC_SLASH,        KC_RSHIFT,
+                  TD(TD_RPRN),  KC_N,    KC_M,     KC_COMMA,    KC_DOT,      KC_SLASH,        KC_RSHIFT,
                                          KC_LGUI,  KC_RALT,     KC_LBRACKET, KC_RBRACKET,     MO(1),
                   KC_TRNS, KC_TRNS,
                   KC_TRNS,
@@ -80,6 +86,60 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint16_t PROGMEM fn_actions[] = {
     [1] = ACTION_LAYER_TAP_TOGGLE(SYMB)                // FN1 - Momentary Layer 1 (Symbols)
+};
+
+
+static void
+td_lbrackets_finished (qk_tap_dance_state_t *state, void *user_data) {
+  if(state->count == 1) {
+    register_code16(KC_LPRN);
+  } else if(state->count == 2) {
+    register_code16(KC_LBRC);
+  } else {
+    register_code16(KC_LCBR);
+  }
+}
+
+static void
+td_rbrackets_finished (qk_tap_dance_state_t *state, void *user_data) {
+  if(state->count == 1) {
+    register_code16(KC_RPRN);
+  } else if(state->count == 2) {
+    register_code16(KC_RBRC);
+  } else {
+    register_code16(KC_RCBR);
+  }
+}
+
+static void
+td_lbrackets_reset (qk_tap_dance_state_t *state, void *user_data) {
+  if(state->count == 1) {
+    unregister_code16(KC_LPRN);
+  } else if(state->count == 2) {
+    unregister_code16(KC_LBRC);
+  } else {
+    unregister_code16(KC_LCBR);
+  }
+}
+
+static void
+td_rbrackets_reset (qk_tap_dance_state_t *state, void *user_data) {
+  if(state->count == 1) {
+    unregister_code16(KC_RPRN);
+  } else if(state->count == 2) {
+    unregister_code16(KC_RBRC);
+  } else {
+    unregister_code16(KC_RCBR);
+  }
+}
+
+qk_tap_dance_action_t tap_dance_actions[] = {
+  /*
+  [TD_LPRN] = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, KC_LPRN),
+  [TD_RPRN] = ACTION_TAP_DANCE_DOUBLE(KC_RBRC, KC_RPRN)
+  */
+  [TD_LPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_lbrackets_finished, td_lbrackets_reset),
+  [TD_RPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_rbrackets_finished, td_rbrackets_reset),
 };
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
