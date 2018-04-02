@@ -27,20 +27,20 @@ enum {
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [BASE] = KEYMAP(KC_EQUAL,       KC_1,     KC_2,    KC_3,   KC_4, KC_5, ALL_T(KC_NO),
-                  KC_TAB,         KC_Q,     KC_W,    KC_E,   KC_R, KC_T, TG(1),
-                  KC_LCTL,        KC_A,     KC_S,    KC_D,   KC_F, KC_G,
-                  KC_LSHIFT,      KC_Z,     KC_X,    KC_C,   KC_V, KC_B, TD(TD_LPRN),
-                  LT(1,KC_GRAVE), KC_QUOTE, KC_LCTL, KC_LALT,KC_LGUI,
+  [BASE] = KEYMAP(KC_EQUAL,          KC_1,     KC_2,    KC_3,   KC_4, KC_5, ALL_T(KC_NO),
+                  KC_TAB,            KC_Q,     KC_W,    KC_E,   KC_R, KC_T, TG(SYMB),
+                  KC_LCTL,           KC_A,     KC_S,    KC_D,   KC_F, KC_G,
+                  KC_LSHIFT,         KC_Z,     KC_X,    KC_C,   KC_V, KC_B, TD(TD_LPRN),
+                  LT(SYMB,KC_GRAVE), KC_QUOTE, KC_LCTL, KC_LALT,KC_LGUI,
                                                                     KC_TRNS, KC_TRNS,
                                                                              KC_TRNS,
                                                         KC_TAB, KC_BSPACE, KC_ESCAPE,
 
-                  MEH_T(KC_NO), KC_6,    KC_7,     KC_8,        KC_9,        KC_0,            KC_MINUS,
-                  TG(1),        KC_Y,    KC_U,     KC_I,        KC_O,        KC_P,            KC_BSLASH,
-                                KC_H,    KC_J,     KC_K,        KC_L,        LT(2,KC_SCOLON), KC_QUOTE,
-                  TD(TD_RPRN),  KC_N,    KC_M,     KC_COMMA,    KC_DOT,      KC_SLASH,        KC_RSHIFT,
-                                         KC_LGUI,  KC_RALT,     KC_LBRACKET, KC_RBRACKET,     MO(1),
+                  MEH_T(KC_NO), KC_6,    KC_7,     KC_8,        KC_9,        KC_0,               KC_MINUS,
+                  TG(SYMB),     KC_Y,    KC_U,     KC_I,        KC_O,        KC_P,               KC_BSLASH,
+                                KC_H,    KC_J,     KC_K,        KC_L,        LT(MDIA,KC_SCOLON), KC_QUOTE,
+                  TD(TD_RPRN),  KC_N,    KC_M,     KC_COMMA,    KC_DOT,      KC_SLASH,           KC_RSHIFT,
+                                         KC_LGUI,  KC_RALT,     KC_LBRACKET, KC_RBRACKET,        MO(SYMB),
                   KC_TRNS, KC_TRNS,
                   KC_TRNS,
                   KC_LEAD, KC_ENTER, KC_SPACE),
@@ -82,6 +82,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                   KC_TRNS, KC_TRNS, KC_WWW_BACK),
 
 };
+
+
+/* Random colors when typing */
+static uint8_t rgb_led;
+static uint8_t rgb_hue;
+static uint8_t rgb_sat;
+static uint8_t rgb_val;
+static uint8_t rgb_set=0;
 
 
 const uint16_t PROGMEM fn_actions[] = {
@@ -156,6 +164,15 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
   return MACRO_NONE;
 };
 
+static uint16_t random_char(uint16_t max) {
+   #if defined(__AVR_ATmega32U4__)
+    return (TCNT0 + TCNT1 + TCNT3 + TCNT4) % max;
+  #else
+    return rand() % max;
+  #endif
+}
+  
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     // dynamically generate these.
@@ -180,6 +197,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
   }
+
+  if(record->event.pressed) {
+    rgb_led = random_char(RGBLED_NUM);
+    rgb_hue = random_char(360);
+    rgb_sat = random_char(255);
+    rgb_val = rgblight_get_val();
+    rgb_set = 1;
+  }
+
+
   return true;
 }
 
@@ -194,6 +221,14 @@ void matrix_init_user(void) {
 // Runs constantly in the background, in a loop.
 LEADER_EXTERNS(); // Needed for leader key processing
 void matrix_scan_user(void) {
+
+  if(rgblight_get_mode() == 1) {
+    if(rgb_set) {
+      rgb_set = 0;
+      rgblight_sethsv_at(rgb_hue, rgb_sat, rgb_val, rgb_led);
+    }
+  }
+
   LEADER_DICTIONARY() {
     leading = false;
     leader_end();
