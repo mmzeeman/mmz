@@ -16,7 +16,11 @@ enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
   EPRM,
   VRSN,
-  RGB_SLD
+  RGB_SLD,
+
+  M_BRACKET_IN_CBR,
+  M_BRACKET_IN_PRN,
+  M_BRACKET_IN_BRC
 };
 
 
@@ -27,23 +31,23 @@ enum {
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [BASE] = KEYMAP(KC_EQUAL,          KC_1,     KC_2,    KC_3,   KC_4, KC_5, ALL_T(KC_NO),
-                  KC_TAB,            KC_Q,     KC_W,    KC_E,   KC_R, KC_T, TG(SYMB),
-                  KC_LCTL,           KC_A,     KC_S,    KC_D,   KC_F, KC_G,
-                  KC_LSHIFT,         KC_Z,     KC_X,    KC_C,   KC_V, KC_B, TD(TD_LPRN),
-                  LT(SYMB,KC_GRAVE), KC_QUOTE, KC_LCTL, KC_LALT,KC_LGUI,
-                                                                    KC_TRNS, KC_TRNS,
-                                                                             KC_TRNS,
-                                                        KC_TAB, KC_BSPACE, KC_ESCAPE,
+  [BASE] = KEYMAP(KC_EQUAL,          KC_1,     KC_2,    KC_3,    KC_4, KC_5, ALL_T(KC_NO),
+                  KC_TAB,            KC_Q,     KC_W,    KC_E,    KC_R, KC_T, TG(SYMB),
+                  KC_LCTL,           KC_A,     KC_S,    KC_D,    KC_F, KC_G,
+                  KC_LSHIFT,         KC_Z,     KC_X,    KC_C,    KC_V, KC_B, TD(TD_LPRN),
+                  LT(SYMB,KC_GRAVE), KC_QUOTE, KC_LCTL, KC_LALT, KC_LGUI,
+                                                                        KC_TRNS, KC_TRNS,
+                                                                                 KC_TRNS,
+                                                            KC_TAB, KC_BSPACE, KC_ESCAPE,
 
                   MEH_T(KC_NO), KC_6,    KC_7,     KC_8,        KC_9,        KC_0,               KC_MINUS,
                   TG(SYMB),     KC_Y,    KC_U,     KC_I,        KC_O,        KC_P,               KC_BSLASH,
                                 KC_H,    KC_J,     KC_K,        KC_L,        LT(MDIA,KC_SCOLON), KC_QUOTE,
                   TD(TD_RPRN),  KC_N,    KC_M,     KC_COMMA,    KC_DOT,      KC_SLASH,           KC_RSHIFT,
                                          KC_LGUI,  KC_RALT,     KC_LBRACKET, KC_RBRACKET,        MO(SYMB),
-                  KC_TRNS, KC_TRNS,
-                  KC_TRNS,
-                  KC_LEAD, KC_ENTER, KC_SPACE),
+                  M_BRACKET_IN_BRC, M_BRACKET_IN_PRN,
+                  M_BRACKET_IN_CBR,
+                  KC_LEAD,          KC_ENTER, KC_SPACE),
 
   [SYMB] = KEYMAP(KC_ESCAPE, KC_F1,   KC_F2,   KC_F3,       KC_F4,       KC_F5,    KC_TRNS,
                   VRSN,      KC_EXLM, KC_AT,   KC_LCBR,     KC_RCBR,     KC_PIPE,  KC_TRNS,
@@ -54,8 +58,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                    KC_TRNS,
                                                                  RGB_VAD, RGB_VAI, KC_TRNS,
 
-                  KC_TRNS, KC_F6,   KC_F7,   KC_F8,    KC_F9,   KC_F10,  KC_F11,
-                  KC_TRNS, KC_LCBR, KC_RCBR, KC_TRNS,  KC_TRNS, KC_TRNS, KC_F12,
+                  KC_TRNS, KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_F11,
+                  KC_TRNS, KC_LCBR, KC_RCBR, KC_TRNS, KC_TRNS,  KC_TRNS, KC_F12,
                            KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, KC_TRNS, KC_TRNS,
                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS,
                                     KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS,
@@ -63,14 +67,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                   KC_TRNS,
                   KC_TRNS, RGB_HUD, RGB_HUI),
 
-  [MDIA] = KEYMAP(KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS, KC_TRNS,
-                  KC_TRNS, KC_TRNS, KC_MS_BTN2, KC_MS_BTN3, KC_MS_BTN1, KC_TRNS, KC_TRNS,
-                  KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-                  KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS, KC_TRNS,
-                  KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,
-                                                                        KC_TRNS, KC_TRNS,
-                                                                                 KC_TRNS,
-                                                               KC_TRNS, KC_TRNS, KC_TRNS,
+  [MDIA] = KEYMAP(KC_TRNS, KC_TRNS,          KC_TRNS,          KC_TRNS,          KC_TRNS,    KC_TRNS, KC_TRNS,
+                  KC_TRNS, KC_TRNS,          KC_TRNS,          KC_TRNS,          KC_TRNS,    KC_TRNS, KC_TRNS,
+                  KC_TRNS, KC_TRNS,          KC_MS_BTN2,       KC_MS_BTN3,       KC_MS_BTN1, KC_TRNS,
+                  KC_TRNS, KC_TRNS,          KC_TRNS,          KC_TRNS,          KC_TRNS,    KC_TRNS, KC_TRNS,
+                  KC_TRNS, KC_TRNS,          KC_TRNS,          KC_TRNS,          KC_TRNS,
+                                                                                             KC_TRNS, KC_TRNS,
+                                                                                                      KC_TRNS,
+                                                                                    KC_TRNS, KC_TRNS, KC_TRNS,
 
                   KC_TRNS, KC_TRNS,    KC_TRNS,         KC_TRNS,             KC_TRNS,             KC_TRNS, KC_TRNS,
                   KC_TRNS, KC_TRNS,    KC_TRNS,         KC_TRNS,             KC_TRNS,             KC_TRNS, KC_TRNS,
@@ -83,13 +87,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-
-/* Random colors when typing */
-static uint8_t rgb_led;
-static uint8_t rgb_hue;
-static uint8_t rgb_sat;
-static uint8_t rgb_val;
-static uint8_t rgb_set=0;
 
 
 const uint16_t PROGMEM fn_actions[] = {
@@ -164,30 +161,27 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
   return MACRO_NONE;
 };
 
-static uint16_t random_char(uint16_t max) {
-   #if defined(__AVR_ATmega32U4__)
-    return (TCNT0 + TCNT1 + TCNT3 + TCNT4) % max;
-  #else
-    return rand() % max;
-  #endif
-}
-  
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     // dynamically generate these.
     case EPRM:
-      if (record->event.pressed) {
-        eeconfig_init();
-      }
+      if (record->event.pressed) { eeconfig_init(); }
       return false;
-      break;
+    case M_BRACKET_IN_CBR:
+      if (record->event.pressed) { SEND_STRING("{}" SS_TAP(X_LEFT)); }
+      return false;
+    case M_BRACKET_IN_PRN:
+      if (record->event.pressed) { SEND_STRING("[]" SS_TAP(X_LEFT)); }
+      return false;
+    case M_BRACKET_IN_BRC:
+      if (record->event.pressed){ SEND_STRING("()" SS_TAP(X_LEFT)); }
+      return false;
     case VRSN:
       if (record->event.pressed) {
         SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
       }
       return false;
-      break;
     case RGB_SLD:
       if (record->event.pressed) {
         #ifdef RGBLIGHT_ENABLE
@@ -195,17 +189,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #endif
       }
       return false;
-      break;
   }
-
-  if(record->event.pressed) {
-    rgb_led = random_char(RGBLED_NUM);
-    rgb_hue = random_char(360);
-    rgb_sat = random_char(255);
-    rgb_val = rgblight_get_val();
-    rgb_set = 1;
-  }
-
 
   return true;
 }
@@ -221,26 +205,41 @@ void matrix_init_user(void) {
 // Runs constantly in the background, in a loop.
 LEADER_EXTERNS(); // Needed for leader key processing
 void matrix_scan_user(void) {
-
-  if(rgblight_get_mode() == 1) {
-    if(rgb_set) {
-      rgb_set = 0;
-      rgblight_sethsv_at(rgb_hue, rgb_sat, rgb_val, rgb_led);
-    }
-  }
-
   LEADER_DICTIONARY() {
     leading = false;
     leader_end();
 
+    /* Things which pair */
+    SEQ_ONE_KEY(KC_H) { SEND_STRING("\"\"" SS_TAP(X_LEFT)); }
+
+    SEQ_ONE_KEY(KC_J) { SEND_STRING("()" SS_TAP(X_LEFT)); }
+    SEQ_ONE_KEY(KC_K) { SEND_STRING("[]" SS_TAP(X_LEFT)); }
+    SEQ_ONE_KEY(KC_L) { SEND_STRING("{}" SS_TAP(X_LEFT)); }
+    
+    /* Erlang binaries */
+    SEQ_ONE_KEY(KC_Y) { SEND_STRING("<<>>" SS_TAP(X_LEFT) SS_TAP(X_LEFT)); }
+
+    /* Zotonic/Django template stuff */
+    SEQ_ONE_KEY(KC_U) { SEND_STRING("{%  %}" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT)); }
+    SEQ_ONE_KEY(KC_I) { SEND_STRING("{{  }}" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT)); }
+    SEQ_ONE_KEY(KC_O) { SEND_STRING("{_  _}" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT)); }
+    
+    /* Erlang arrow */
+    SEQ_ONE_KEY(KC_A) { SEND_STRING("->"); }
+
     /* Git */
     SEQ_ONE_KEY(KC_G) { SEND_STRING("git"); }
     SEQ_TWO_KEYS(KC_G, KC_S) { SEND_STRING("git status"); }
+    SEQ_TWO_KEYS(KC_G, KC_P) { SEND_STRING("git pull"); }
+    SEQ_TWO_KEYS(KC_G, KC_C) { SEND_STRING("git checkout"); }
     SEQ_TWO_KEYS(KC_G, KC_D) { SEND_STRING("git diff"); }
+    SEQ_TWO_KEYS(KC_G, KC_O) { SEND_STRING("git commit"); }
 
     /* Zotonic and erlang */
     SEQ_TWO_KEYS(KC_Z, KC_M) { SEND_STRING("z:m()."); }
     SEQ_TWO_KEYS(KC_Z, KC_C) { SEND_STRING("Context"); }
+
+    /* Recon stuff */
     SEQ_TWO_KEYS(KC_R, KC_T) { SEND_STRING("length(recon:tcp())."); }
   }
 };
